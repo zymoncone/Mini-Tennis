@@ -1,25 +1,40 @@
+var LeaderBoardCanvas;
+
 function setup() {
-    createCanvas(400, 600);
+    createCanvas(700, 600); //400, 600
+    LeaderBoardCanvas = createGraphics(400, 600);
+    
     frameRate(60);
     noCursor();
     tennisBall = new Ball(); //ask about .create()
     tennisTable = new Table();
     time = new Time();
+    scoreBoard = new LeaderBoard();
 }
 
 function draw() {
     background(200, 89, 100); //50 for blue background
+    //
+    LeaderBoardCanvas.background(200);          //leaderboard canvas
+    image(LeaderBoardCanvas, 400, 0, 300, 600);
+    //
+    scoreBoard.display();
     tennisBall.createNewBall();
     tennisTable.createNewTable();
     time.runClock();
     tennisBall.block.run();
+    scoreBoard.display();
 }
 
+//function keyPressed() {
+//    redraw();
+//}
 
 //new Time Class
 var Time = function()
 {
     this.milliseconds = 0;
+    this.currentDay = moment().calendar();
 };
 
 Time.prototype.runClock = function()
@@ -28,13 +43,21 @@ Time.prototype.runClock = function()
     this.seconds = this.milliseconds/60; //60 = frames/second
     this.seconds = Math.round(this.seconds);
     this.showClock();
+    this.showDay();
+};
+
+Time.prototype.showDay = function()
+{
+    textSize(15);
+    fill(0);
+    text(this.currentDay, 10, 8, width, height);
 };
 
 Time.prototype.showClock = function()
 {
     textSize(25);
     fill(0);
-    text(this.seconds.toString() + " seconds", 15, 80, width, height);
+    text(this.seconds.toString() + " sec", 10, 40, width, height);
    
 };
 
@@ -42,7 +65,7 @@ Time.prototype.showClock = function()
 var Block = function()
 {
     this.diameter = 60;
-    this.xPosition = random(100, width - this.diameter);
+    this.xPosition = random(100, 400 - this.diameter); //width = 400
     this.yPosition = random(90, 500);
     this.color = color(255, 204, random(0, 255));
     this.radius = this.diameter/2;
@@ -81,7 +104,7 @@ var Ball = function()
     this.block = null;
     this.ballSpeedX = 4;
     this.ballSpeedY = 4;
-    this.xPosition = random(25, width - 50);
+    this.xPosition = random(25, 400 - 50); //width = 400
     this.yPosition = random(25, height - 400);
 };
     
@@ -91,7 +114,6 @@ Ball.prototype.createNewBall = function()
     ellipse(this.xPosition, this.yPosition, this.diameter, this.diameter);
     this.move();
     this.showPoints();
-//    this.block.run();
 };
     
 Ball.prototype.move = function()
@@ -105,9 +127,9 @@ Ball.prototype.move = function()
 
 Ball.prototype.showPoints = function()
 {
-    textSize(60);
-    fill(255);
-    text(this.points.toString(), 10, 40, 100, 100);
+    textSize(50);
+    fill(0);
+    text(this.points.toString(), 10, 90, width, height);
 };
 
 Ball.prototype.checkForTable = function()
@@ -119,7 +141,7 @@ Ball.prototype.checkForTable = function()
     
 Ball.prototype.checkForBoundaries = function()
 {
-    if (this.xPosition > width - this.radius) {
+    if (this.xPosition > 400 - this.radius) { //width = 400
         this.ballSpeedX *= -1;
     }
         
@@ -130,13 +152,29 @@ Ball.prototype.checkForBoundaries = function()
     if (this.yPosition < this.radius) {
         this.ballSpeedY *= -1;
     }
+    
+    //TODO --->
+    
+//    //Tests for ball bouncing off side
+//    if (this.yPosition - this.radius > tennisTable.yPosition && this.yPosition - this.radius < tennisTable.yPosition + 10 && this.xPosition + this.radius == mouseX) {
+//        noLoop();
+//        this.ballSpeedX *= -1;
+//        this.ballSpeedY *= -1;
+//    }
+//    
+//    if (this.yPosition - this.radius > tennisTable.yPosition && this.yPosition - this.radius < tennisTable.yPosition + 10 && this.xPosition == mouseX + 100) {
+//        noLoop();
+//        this.ballSpeedX *= -1;
+//        this.ballSpeedY *= -1;
+//    }
 };
 
 Ball.prototype.stopGame = function()
 {
-    if (this.yPosition > height - this.radius) {
-        noLoop();
+    if (this.yPosition > height - this.radius) { 
         tennisBall.block = null;
+        scoreBoard.displayScores();
+        noLoop();
         textSize(45);
         fill(0);
         text("Game Over!", 80, 300, width, height);
@@ -171,3 +209,32 @@ Table.prototype.createNewTable = function()
     fill(this.color);
     rect(mouseX, this.yPosition, 100, 10); 
 };
+
+
+var LeaderBoard = function()
+{
+   this.scores = 0; 
+};
+
+LeaderBoard.prototype.display = function()
+{
+    fill(0);
+    rect(400, 10, 300, 50);
+    fill(0);
+    rect(400, 0, 5, height);
+    //Fix Stroke
+    textSize(30);
+    fill(255);
+    text("Leader Board", 460, 30, width, height);
+};
+
+LeaderBoard.prototype.displayScores = function()
+{
+    //look at save();
+    this.getPlayerName = prompt("Enter name for leadership", "Szymon S.");
+    textSize(17);
+    fill(0);
+    text("1. " + this.getPlayerName + " scored " + tennisBall.points.toString() + " points", 415, 80, width, height);
+};
+
+    
