@@ -26,10 +26,6 @@ function draw() {
     scoreBoard.display();
 }
 
-//function keyPressed() {
-//    redraw();
-//}
-
 //new Time Class
 var Time = function()
 {
@@ -200,20 +196,30 @@ Ball.prototype.bounceOffTable = function()
 var Table = function()
 {
     this.yPosition = 550;
+   
     this.color = color(65);
     this.movementAmount = 15;
 };
     
 Table.prototype.createNewTable = function()
 {
+    this.xPosition = mouseX;
+    if (this.xPosition + 100 > 400) {
+        this.xPosition = 300;
+        cursor(HAND);
+    } else {
+        this.xPosition = mouseX;
+        noCursor();
+    };
+    
     fill(this.color);
-    rect(mouseX, this.yPosition, 100, 10); 
+    rect(this.xPosition, this.yPosition, 100, 10); 
 };
 
 
 var LeaderBoard = function()
 {
-   this.scores = 0; 
+   this.players = [];
 };
 
 LeaderBoard.prototype.display = function()
@@ -232,9 +238,15 @@ LeaderBoard.prototype.displayScores = function()
 {
     //look at save();
     this.getPlayerName = prompt("Enter name for leadership", "Szymon S.");
+    this.players.push(this.getPlayerName);
+    console.log(this.players); //for test purposes
     textSize(17);
     fill(0);
-    text("1. " + this.getPlayerName + " scored " + tennisBall.points.toString() + " points", 415, 80, width, height);
+    text("1. " + _.first(this.players) + " scored " + tennisBall.points.toString() + " points", 415, 80, width, height);
+    save(this.players, 'Player.txt');
 };
 
-    
+var WriteToFile = function()
+{
+    //TODO
+};
