@@ -77,7 +77,8 @@ Ball.prototype.stopGame = function()
 {
     if (this.yPosition > height - this.radius) { 
         tennisBall.block = null;
-        scoreBoard.displayScores();
+        scoreBoard.displayNewScores();
+        scoreBoard.displayhighScores();
         noLoop();
         textSize(45);
         fill(0);
