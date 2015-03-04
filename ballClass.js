@@ -56,26 +56,11 @@ Ball.prototype.checkForBoundaries = function()
     if (this.yPosition < this.radius) {
         this.ballSpeedY *= -1;
     }
-    
-    //TODO --->
-    
-//    //Tests for ball bouncing off side
-//    if (this.yPosition - this.radius > tennisTable.yPosition && this.yPosition - this.radius < tennisTable.yPosition + 10 && this.xPosition + this.radius == mouseX) {
-//        noLoop();
-//        this.ballSpeedX *= -1;
-//        this.ballSpeedY *= -1;
-//    }
-//    
-//    if (this.yPosition - this.radius > tennisTable.yPosition && this.yPosition - this.radius < tennisTable.yPosition + 10 && this.xPosition == mouseX + 100) {
-//        noLoop();
-//        this.ballSpeedX *= -1;
-//        this.ballSpeedY *= -1;
-//    }
 };
 
 Ball.prototype.stopGame = function()
 {
-    if (this.yPosition > height - this.radius) { 
+    if (this.yPosition + this.radius > tennisTable.yPosition + 10) { 
         tennisBall.block = null;
         scoreBoard.displayNewScores();
         scoreBoard.displayhighScores();
