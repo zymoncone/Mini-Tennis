@@ -1,3 +1,4 @@
+//new Leaderboard Class
 var LeaderBoard = function()
 {
     this.players = [];
@@ -17,11 +18,28 @@ LeaderBoard.prototype.display = function()
     rect(400, 10, 300, 50);
     fill(0);
     rect(400, 0, 5, height);
-    //Fix Stroke
+    //Leaderboard title text
     textSize(30);
     fill(255);
     text("Leader Board", 460, 30, width, height);
     this.displayhighScores();
+    this.displayHowToScorePoints();
+};
+
+LeaderBoard.prototype.displayHowToScorePoints = function()
+{
+    fill(60);
+    rect(405, 547, 300, 50); //this rectangle creates a shadow effect
+    fill(100);
+    rect(402, 545, 300, 50); 
+    //text for bottom right corner
+    textSize(15);
+    fill(0);
+    text("1 point for every bounce", 415, 550, width, height);
+    //text for bottom right corner
+    textSize(15);
+    fill(0);
+    text("1 additional point for every block hit", 415, 570, width, height);
 };
 
 LeaderBoard.prototype.displayNewScores = function()
