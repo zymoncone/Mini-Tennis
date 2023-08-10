@@ -23,6 +23,8 @@ draw = function() { //p5 draw function, runs the code at 60 fps
     tennisBall.createNewBall();
     tennisTable.createNewTable();
     time.runClock();
-    tennisBall.block.run();
+    if (tennisBall.block) {
+        tennisBall.block.run();
+    }
     scoreBoard.display();
 }
