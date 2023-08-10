@@ -1,7 +1,7 @@
 //new Block Class
 var Block = function()
 {
-    this.diameter = 60;
+    this.diameter = 40;
     this.xPosition = random(100, 400 - this.diameter); //width = 400
     this.yPosition = random(90, 500);
     this.color = color(255, 204, random(0, 255));
